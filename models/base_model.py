@@ -14,9 +14,9 @@ class BaseModel:
             for key, value in kwrgs.items():
                 if key == '__class__':
                     continue
-                if key in ['created_at', 'updated_at']:
+                if key in ('created_at', 'updated_at'):
                     value = datetime.fromisoformat(value)
-                    setattr(self, key, value)
+                setattr(self, key, value)
         else:
             self.id = str(uuid4())
             self.created_at = datetime.now()
