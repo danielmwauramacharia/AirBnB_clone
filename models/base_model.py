@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+##!/usr/bin/python3
 """The base model module"""
 from uuid import uuid4
 from datetime import datetime
@@ -7,11 +7,19 @@ from datetime import datetime
 class BaseModel():
     """Defining the properties of the base model"""
 
-    def __init__(self):
+    def __init__(self, *args, **kwrgs):
         """Attributes instantiation"""
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = self.created_at
+        if kwrgs:
+            for key, value in kwrgs.items():
+                if key == '__class__':
+                    continue
+                if key in ['created_at', 'updated_at', ] and isinstance(key, str):
+                    value = datetime.fromisoformat(value)
+                setattr(self, key, value)
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
 
     def __str__(self) -> str:
         """Return the string representation of the object"""
