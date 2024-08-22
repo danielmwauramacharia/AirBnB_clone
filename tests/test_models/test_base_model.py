@@ -38,6 +38,13 @@ class TestBase(unittest.TestCase):
         self.assertIn("updated_at", to_dict.keys())
         self.assertEqual(to_dict['__class__'], type(to_dict).__name__)
 
+    def test_str(self):
+        """Testing the string representation of the object"""
+        model = BaseModel()
+        str_repr = f"[{model.__class__.__name__}] ({model.id}) {
+            model.__dict__}"
+        self.assertEqual(print(model), str_repr)
+
 
 if __name__ == "__main__":
     unittest.main()
