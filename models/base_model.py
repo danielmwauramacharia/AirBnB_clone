@@ -1,4 +1,4 @@
-##!/usr/bin/python3
+#!/usr/bin/python3
 """The base model module"""
 from uuid import uuid4
 from datetime import datetime
@@ -34,8 +34,10 @@ class BaseModel:
 
     def to_dict(self):
         """Convert the attributes of object to dictionary"""
-        to_json = self.__dict__
+        to_json = self.__dict__.copy()
         to_json['__class__'] = self.__class__.__name__
-        to_json['created_at'] = to_json['created_at'].isoformat()
-        to_json['updated_at'] = to_json['updated_at'].isoformat()
+        if isinstance(to_json['created_at'], datetime):
+            to_json['created_at'] = to_json['created_at'].isoformat()
+        if isinstance(to_json['updated_at'], datetime):
+            to_json['updated_at'] = to_json['updated_at'].isoformat()
         return to_json
