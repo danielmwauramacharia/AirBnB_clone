@@ -4,7 +4,7 @@ from uuid import uuid4
 from datetime import datetime
 
 
-class BaseModel:
+class BaseModel():
     """Defining the properties of the base model"""
 
     def __init__(self):
