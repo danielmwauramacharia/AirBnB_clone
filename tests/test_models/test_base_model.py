@@ -2,17 +2,18 @@
 """Module to test the BaseModel Class"""
 import unittest
 from datetime import datetime
-import time
-from uuid import uuid4
 from models.base_model import BaseModel
 
 
-class TestBase(unittest.TestCase):
+class TestBaseModel(unittest.TestCase):
     """Test case for the basemodel"""
 
-    def test_initialization(self):
-        """Test the __init__ method"""
+    def test_init(self):
+        """Test the __init__ method of BaseModel"""
         model = BaseModel()
+        self.assertIsNotNone(model.id)
+        self.assertIsNotNone(model.created_at)
+        self.assertIsNotNone(model.updated_at)
         self.assertIsInstance(model.id, str)
         self.assertIsInstance(model.created_at, datetime)
         self.assertIsInstance(model.updated_at, datetime)
@@ -20,30 +21,35 @@ class TestBase(unittest.TestCase):
                          "<class 'models.base_model.BaseModel'>")
 
     def test_save(self):
-        """Testing the method save in base_model module"""
-        test = BaseModel()
-        time.sleep(0.5)
-        now = datetime.now()
-        test.save()
-        diff = test.updated_at - now
-        self.assertTrue(abs(diff.total_seconds()) < 0.01)
+        """Testing the method save of the BaseModel"""
+        model = BaseModel()
+        creation_time = model.created_at
+        model.save()
+        update_time = model.updated_at
+        self.assertNotEqual(creation_time, update_time)
 
     def test_to_dict(self):
         """Test the to_dict method"""
-        dict_inst = BaseModel()
-        to_dict = dict_inst.to_dict()
+        model = BaseModel()
+        to_dict = model.to_dict()
         self.assertIsInstance(to_dict, dict)
         self.assertIn("id", to_dict.keys())
         self.assertIn("created_at", to_dict.keys())
         self.assertIn("updated_at", to_dict.keys())
-        self.assertEqual(to_dict['__class__'], type(to_dict).__name__)
+        self.assertEqual(to_dict['__class__'], model.__class__.__name__)
+        self.assertEqual(to_dict["id"], model.id)
+        self.assertEqual(to_dict["created_at"], model.created_at.isoformat())
+        self.assertEqual(to_dict["updated_at"], model.updated_at.isoformat())
 
     def test_str(self):
         """Testing the string representation of the object"""
         model = BaseModel()
+        self.assertTrue(str(model).startswith('[BaseModel]'))
+        self.assertIn(model.id, str(model))
+        self.assertIn(str(model.__dict__), str(model))
         str_repr = f"[{model.__class__.__name__}] ({model.id}) {
             model.__dict__}"
-        self.assertEqual(print(model), str_repr)
+        self.assertEqual(str(model), str_repr)
 
 
 if __name__ == "__main__":
