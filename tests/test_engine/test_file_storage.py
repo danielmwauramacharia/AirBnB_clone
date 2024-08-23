@@ -52,7 +52,7 @@ class TestFileStorage(unittest.TestCase):
         should raise TypeError
         """
         with self.assertRaises(TypeError):
-            models.storage.new(BaseModel(), 1)
+            models.storage.new(BaseModel())
 
     def test_new_with_None(self):
         """
@@ -90,7 +90,7 @@ class TestFileStorage(unittest.TestCase):
     def test_reload_empy_file(self):
         """Reload when the file is empty or non existent"""
         with self.assertRaises(TypeError):
-            models.storage.reload(None)
+            models.storage.reload()
 
 
 if __name__ == '__main__':
