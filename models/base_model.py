@@ -2,7 +2,7 @@
 """The base model module"""
 from uuid import uuid4
 from datetime import datetime
-import models
+# import models
 
 
 class BaseModel:
@@ -21,23 +21,21 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
-            models.storage.new(self)
-
-    def __str__(self) -> str:
-        """Return the string representation of the object"""
-        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+            # models.storage.new(self)
 
     def save(self):
         """Update the updated at attribute"""
         self.updated_at = datetime.now()
-        models.storage.save()
+        # models.storage.save()
 
     def to_dict(self):
         """Convert the attributes of object to dictionary"""
-        to_json = self.__dict__.copy()
-        to_json['__class__'] = self.__class__.__name__
-        if isinstance(to_json['created_at'], datetime):
-            to_json['created_at'] = to_json['created_at'].isoformat()
-        if isinstance(to_json['updated_at'], datetime):
-            to_json['updated_at'] = to_json['updated_at'].isoformat()
-        return to_json
+        to_dict = self.__dict__.copy()
+        to_dict['__class__'] = self.__class__.__name__
+        to_dict['created_at'] = self.created_at.isoformat()
+        to_dict['updated_at'] = self.updated_at.isoformat()
+        return to_dict
+
+    def __str__(self) -> str:
+        """Return the string representation of the object"""
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
