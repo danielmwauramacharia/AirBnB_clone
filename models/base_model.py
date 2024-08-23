@@ -10,6 +10,8 @@ class BaseModel:
 
     def __init__(self, *args, **kwrgs):
         """Attributes instantiation"""
+        if args:
+            pass
         if kwrgs:
             for key, value in kwrgs.items():
                 if key == '__class__':
