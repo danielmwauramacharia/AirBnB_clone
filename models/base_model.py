@@ -12,13 +12,15 @@ class BaseModel:
         """Attributes instantiation"""
         if args:
             pass
+        time_format = "%Y-%m-%dT%H:%M:%S.%f"
         if kwrgs:
             for key, value in kwrgs.items():
                 if key == '__class__':
                     continue
                 if key in ('created_at', 'updated_at'):
-                    value = datetime.fromisoformat(value)
-                setattr(self, key, value)
+                    setattr(self, key, datetime.strptime(value, time_format))
+                else:
+                    setattr(self, key, value)
         else:
             self.id = str(uuid4())
             self.created_at = datetime.now()
